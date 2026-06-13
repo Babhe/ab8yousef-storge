@@ -1,158 +1,218 @@
--- [[ سكريبت أبو يوسف للوزنيات والتطوير - نسخة حصرية 👑 ]]
--- 🛡️ الترخيص مقفل بالملي لحساب الزبون: tt_t7r
+-- سكريبت التجميع الاحترافي [نسخة البيع الرسمية] - حقوق: أبو يوسف - أبو مطر 👑
+-- 🛡️ نظام الحماية: الطرد الفوري لغير المشترين (Kick System)
 
-local AllowedUser = "tt_t7r"
+local AllowedUsers = {
+    ["tt_t7r"] = true,
+    ["أبو_يوسف_المالك"] = true
+}
+
 local LocalPlayer = game.Players.LocalPlayer
 
-if LocalPlayer.Name ~= AllowedUser then
-    LocalPlayer:Kick("\n\n[ AbuYousef System ]\n-----------------------------------\nError: Unauthorized Account!\n\nعذرًا يا قلبي، هذا الرابط مقفل لحساب آخر فقط.\n-----------------------------------")
+if not AllowedUsers[LocalPlayer.Name] then
+    LocalPlayer:Kick("\n\n[ AbuYousef - AbuMatar System ]\n-----------------------------------\nError: Unauthorized Account!\n\nعذرًا، هذا السكربت مدفوع وغير مصرح لحسابك بتشغيله.\nلشراء النسخة أو التفعيل تواصل مع المالك مباشرة.\n-----------------------------------")
     return 
 end
 
--- ====================================================================
--- 🎨 تصميم الواجهة الملكية الموسعة
--- ====================================================================
-local sg = Instance.new("ScreenGui", game:GetService("CoreGui"))
-local main = Instance.new("Frame", sg)
-main.Size = UDim2.new(0, 360, 0, 320)
-main.Position = UDim2.new(0.5, -180, 0.4, -160)
-main.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+local sg = Instance.new("ScreenGui")
+sg.Name = "AbuYousef_Perfect_Farm_v2"
+pcall(function() sg.Parent = game:GetService("CoreGui") end)
+if not sg.Parent then sg.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui") end
+
+-- نظام Anti-AFK
+pcall(function()
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:Connect(function()
+        vu:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+        task.wait(1)
+        vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+    end)
+end)
+
+-- اللوحة الرئيسية
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0, 330, 0, 210)
+main.Position = UDim2.new(0.5, -165, 0.4, -105)
+main.BackgroundColor3 = Color3.fromRGB(33, 43, 43)
+main.BorderSizePixel = 0
 main.Active = true
 main.Draggable = true
-Instance.new("UICorner", main).CornerRadius = UDim.new(0, 14)
+main.Parent = sg
 
--- خط الزينة الذهبي
-local line = Instance.new("Frame", main)
-line.Size = UDim2.new(1, 0, 0, 4)
-line.BackgroundColor3 = Color3.fromRGB(212, 175, 55)
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
+local stroke = Instance.new("UIStroke", main)
+stroke.Color = Color3.fromRGB(50, 60, 60)
+stroke.Thickness = 1.5
 
+-- زر التصغير
+local minimizeBtn = Instance.new("TextButton", main)
+minimizeBtn.Size = UDim2.new(0, 30, 0, 30)
+minimizeBtn.Position = UDim2.new(1, -35, 0, 8)
+minimizeBtn.BackgroundColor3 = Color3.fromRGB(25, 30, 30)
+minimizeBtn.Text = "-"
+minimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeBtn.TextSize = 20
+minimizeBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", minimizeBtn).CornerRadius = UDim.new(0, 6)
+
+-- الدائرة الصغيرة عند التصغير
+local circleGui = Instance.new("TextButton", sg)
+circleGui.Size = UDim2.new(0, 65, 0, 65)
+circleGui.Position = UDim2.new(0.1, 0, 0.1, 0)
+circleGui.BackgroundColor3 = Color3.fromRGB(33, 43, 43)
+circleGui.Text = "أبو يوسف"
+circleGui.TextColor3 = Color3.fromRGB(255, 215, 0)
+circleGui.TextSize = 12
+circleGui.Font = Enum.Font.GothamBold
+circleGui.Visible = false
+circleGui.Active = true
+circleGui.Draggable = true
+Instance.new("UICorner", circleGui).CornerRadius = UDim.new(1, 0)
+local circleStroke = Instance.new("UIStroke", circleGui)
+circleStroke.Color = Color3.fromRGB(255, 215, 0)
+circleStroke.Thickness = 2
+
+minimizeBtn.MouseButton1Click:Connect(function()
+    main.Visible = false
+    circleGui.Visible = true
+end)
+
+circleGui.MouseButton1Click:Connect(function()
+    circleGui.Visible = false
+    main.Visible = true
+end)
+
+-- العنوان
 local title = Instance.new("TextLabel", main)
-title.Size = UDim2.new(1, 0, 0, 35)
-title.Position = UDim2.new(0, 0, 0, 5)
-title.Text = "لوحة وزنيات متجر أبو يوسف 👑"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.TextSize = 16
-title.Font = Enum.Font.GothamBold
+title.Size = UDim2.new(1, -40, 0, 45)
+title.Position = UDim2.new(0, 10, 0, 0)
 title.BackgroundTransparency = 1
+title.Text = "سكريت خاص بحقوق أبو يوسف - أبو مطر"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 13
+title.Font = Enum.Font.GothamBold
+title.TextXAlignment = Enum.TextXAlignment.Left
 
-local status = Instance.new("TextLabel", main)
-status.Size = UDim2.new(1, 0, 0, 25)
-status.Position = UDim2.new(0, 0, 0, 40)
-status.Text = "الترخيص مفعل للحساب: [ tt_t7r ] ✅"
-status.TextColor3 = Color3.fromRGB(100, 255, 100)
-status.TextSize = 12
-status.Font = Enum.Font.Gotham
-status.BackgroundTransparency = 1
+-- عداد السرعة
+local speedBox = Instance.new("Frame", main)
+speedBox.Size = UDim2.new(1, -24, 0, 35)
+speedBox.Position = UDim2.new(0, 12, 0, 55)
+speedBox.BackgroundColor3 = Color3.fromRGB(21, 27, 27)
+speedBox.BorderSizePixel = 0
+Instance.new("UICorner", speedBox).CornerRadius = UDim.new(0, 6)
 
--- 🚗 دالة جلب مقعد السائق
-local function GetCurrentVehicle()
-    local char = LocalPlayer.Character
-    if char and char:FindFirstChild("Humanoid") then
-        if char.Humanoid.SeatPart and char.Humanoid.SeatPart:IsA("VehicleSeat") then
-            return char.Humanoid.SeatPart
+local speedLabel = Instance.new("TextLabel", speedBox)
+speedLabel.Size = UDim2.new(1, 0, 1, 0)
+speedLabel.BackgroundTransparency = 1
+speedLabel.Text = "السرعة الليلية: 0 كم/س"
+speedLabel.TextColor3 = Color3.fromRGB(52, 152, 219)
+speedLabel.TextSize = 14
+speedLabel.Font = Enum.Font.GothamMedium
+
+-- عداد المسافة
+local distBox = Instance.new("Frame", main)
+distBox.Size = UDim2.new(1, -24, 0, 35)
+distBox.Position = UDim2.new(0, 12, 0, 95)
+distBox.BackgroundColor3 = Color3.fromRGB(21, 27, 27)
+distBox.BorderSizePixel = 0
+Instance.new("UICorner", distBox).CornerRadius = UDim.new(0, 6)
+
+local distLabel = Instance.new("TextLabel", distBox)
+distLabel.Size = UDim2.new(1, 0, 1, 0)
+distLabel.BackgroundTransparency = 1
+distLabel.Text = "المسافة الكلية: 0 متر"
+distLabel.TextColor3 = Color3.fromRGB(46, 204, 113)
+distLabel.TextSize = 14
+distLabel.Font = Enum.Font.GothamMedium
+
+-- زر التشغيل
+local toggleBtn = Instance.new("TextButton", main)
+toggleBtn.Size = UDim2.new(1, -24, 0, 45)
+toggleBtn.Position = UDim2.new(0, 12, 0, 145)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(192, 57, 43)
+toggleBtn.Text = "شغل التجميع ياقلبي"
+toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleBtn.TextSize = 15
+toggleBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0, 8)
+
+local isToggled = false
+local totalDist = 0
+local savedCFrame = nil
+local farmConnection = nil
+
+toggleBtn.MouseButton1Click:Connect(function()
+    isToggled = not isToggled
+    local character = game.Players.LocalPlayer.Character
+    local seat = character and character:FindFirstChild("Humanoid") and character.Humanoid.SeatPart
+
+    if isToggled then
+        if seat and seat:IsA("VehicleSeat") then
+            toggleBtn.BackgroundColor3 = Color3.fromRGB(39, 174, 96)
+            toggleBtn.Text = "وقف التجميع ياقلبي"
+            savedCFrame = seat.CFrame
+
+            local bp = seat:FindFirstChild("YousefPos") or Instance.new("BodyPosition", seat)
+            bp.Name = "YousefPos"
+            bp.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+            bp.Position = savedCFrame.Position
+
+            local bg = seat:FindFirstChild("YousefGyro") or Instance.new("BodyGyro", seat)
+            bg.Name = "YousefGyro"
+            bg.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+            bg.CFrame = savedCFrame
+
+            farmConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                if not isToggled or not seat or not seat.Parent then
+                    if farmConnection then farmConnection:Disconnect() end
+                    return
+                end
+                pcall(function()
+                    seat.AssemblyLinearVelocity = savedCFrame.LookVector * 145
+                    bp.Position = savedCFrame.Position
+                    bg.CFrame = savedCFrame
+                end)
+            end)
+        else
+            isToggled = false
+            toggleBtn.Text = "اركب مقعد السائق أولاً! ⚠️"
+            task.wait(1.5)
+            toggleBtn.Text = "شغل التجميع ياقلبي"
         end
-    end
-    return nil
-end
-
--- زر 1: وزنية هجولة وتفحيط
-local driftBtn = Instance.new("TextButton", main)
-driftBtn.Size = UDim2.new(0, 300, 0, 40)
-driftBtn.Position = UDim2.new(0, 30, 0, 75)
-driftBtn.Text = "🌪️ وزنية هجولة ونطل (تنقير كفرات)"
-driftBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-driftBtn.BackgroundColor3 = Color3.fromRGB(45, 30, 30)
-driftBtn.Font = Enum.Font.GothamBold
-driftBtn.TextSize = 13
-Instance.new("UICorner", driftBtn).CornerRadius = UDim.new(0, 8)
-
-driftBtn.MouseButton1Click:Connect(function()
-    local seat = GetCurrentVehicle()
-    if seat then
-        seat.MaxSpeed = 145
-        seat.Torque = 60
-        seat.TurnSpeed = 2.5
-        driftBtn.Text = "✅ تم تفعيل وزنية الهجولة!"
-        task.wait(2)
-        driftBtn.Text = "🌪️ وزنية هجولة ونطل (تنقير كفرات)"
     else
-        driftBtn.Text = "⚠️ اركب السيارة أول!"
-        task.wait(2)
-        driftBtn.Text = "🌪️ وزنية هجولة ونطل (تنقير كفرات)"
-    end
-end)
-
--- زر 2: سرعة قصوى
-local speedBtn = Instance.new("TextButton", main)
-speedBtn.Size = UDim2.new(0, 300, 0, 40)
-speedBtn.Position = UDim2.new(0, 30, 0, 125)
-speedBtn.Text = "🚀 سرعة قصوى (145 كم/س)"
-speedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-speedBtn.BackgroundColor3 = Color3.fromRGB(30, 40, 60)
-speedBtn.Font = Enum.Font.GothamBold
-speedBtn.TextSize = 13
-Instance.new("UICorner", speedBtn).CornerRadius = UDim.new(0, 8)
-
-speedBtn.MouseButton1Click:Connect(function()
-    local seat = GetCurrentVehicle()
-    if seat then
-        seat.MaxSpeed = 145
-        seat.Torque = 80
-        speedBtn.Text = "✅ السرعة القصوى مفعلة!"
-        task.wait(2)
-        speedBtn.Text = "🚀 سرعة قصوى (145 كم/س)"
-    else
-        speedBtn.Text = "⚠️ اركب السيارة أول!"
-        task.wait(2)
-        speedBtn.Text = "🚀 سرعة قصوى (145 كم/س)"
-    end
-end)
-
--- زر 3: Anti-AFK
-local afkBtn = Instance.new("TextButton", main)
-afkBtn.Size = UDim2.new(0, 300, 0, 40)
-afkBtn.Position = UDim2.new(0, 30, 0, 175)
-afkBtn.Text = "🛡️ تفعيل Anti-AFK"
-afkBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-afkBtn.BackgroundColor3 = Color3.fromRGB(30, 55, 30)
-afkBtn.Font = Enum.Font.GothamBold
-afkBtn.TextSize = 13
-Instance.new("UICorner", afkBtn).CornerRadius = UDim.new(0, 8)
-
-local afkActive = false
-afkBtn.MouseButton1Click:Connect(function()
-    afkActive = not afkActive
-    if afkActive then
-        afkBtn.Text = "✅ Anti-AFK شغال"
-        afkBtn.BackgroundColor3 = Color3.fromRGB(50, 120, 50)
-        task.spawn(function()
-            while afkActive do
-                local vjs = game:GetService("VirtualInputManager")
-                vjs:SendKeyEvent(true, Enum.KeyCode.W, false, game)
-                task.wait(60)
-                vjs:SendKeyEvent(false, Enum.KeyCode.W, false, game)
-                task.wait(1)
+        toggleBtn.BackgroundColor3 = Color3.fromRGB(192, 57, 43)
+        toggleBtn.Text = "شغل التجميع ياقلبي"
+        if farmConnection then
+            farmConnection:Disconnect()
+            farmConnection = nil
+        end
+        pcall(function()
+            if seat and seat:IsA("VehicleSeat") then
+                if seat:FindFirstChild("YousefPos") then seat.YousefPos:Destroy() end
+                if seat:FindFirstChild("YousefGyro") then seat.YousefGyro:Destroy() end
+                seat.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
             end
         end)
-    else
-        afkBtn.Text = "🛡️ تفعيل Anti-AFK"
-        afkBtn.BackgroundColor3 = Color3.fromRGB(30, 55, 30)
     end
 end)
 
--- زر 4: إغلاق
-local closeBtn = Instance.new("TextButton", main)
-closeBtn.Size = UDim2.new(0, 300, 0, 35)
-closeBtn.Position = UDim2.new(0, 30, 0, 225)
-closeBtn.Text = "❌ إغلاق اللوحة"
-closeBtn.TextColor3 = Color3.fromRGB(255, 100, 100)
-closeBtn.BackgroundColor3 = Color3.fromRGB(40, 20, 20)
-closeBtn.Font = Enum.Font.GothamBold
-closeBtn.TextSize = 13
-Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 8)
-
-closeBtn.MouseButton1Click:Connect(function()
-    sg:Destroy()
+-- تحديث العدادات
+task.spawn(function()
+    while true do
+        task.wait(0.2)
+        pcall(function()
+            local seat = game.Players.LocalPlayer.Character.Humanoid.SeatPart
+            if seat and seat:IsA("VehicleSeat") then
+                if isToggled then
+                    speedLabel.Text = "السرعة الليلية: " .. math.random(144, 146) .. " كم/س"
+                    totalDist = totalDist + (145 * 0.2 * 0.8)
+                    distLabel.Text = "المسافة الكلية: " .. math.floor(totalDist) .. " متر"
+                else
+                    local speed = math.floor(seat.AssemblyLinearVelocity.Magnitude)
+                    speedLabel.Text = "السرعة الليلية: " .. speed .. " كم/س"
+                end
+            else
+                speedLabel.Text = "السرعة الليلية: 0 كم/س"
+            end
+        end)
+    end
 end)
-
-print("[AbuYousef] ✅ تم تحميل السكريبت بنجاح للحساب: " .. AllowedUser)
