@@ -4,7 +4,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 -- 🔒 ضع اسم اللاعب المسموح له باستخدام السكربت هنا بين العلامات
-local AllowedUser = "حط_اسم_اللاعب_هنا" 
+local AllowedUser = "bder55005" 
 
 -- التحقق من الهوية قبل تشغيل أي شيء
 if LocalPlayer.Name ~= AllowedUser then
