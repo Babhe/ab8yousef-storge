@@ -1,0 +1,141 @@
+-- إنشاء واجهة فخمة واحترافية 👑 لـ ابــويــوســفـ 👑 (نسخة الزبون)
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- 🔒 ضع اسم اللاعب المسموح له باستخدام السكربت هنا بين العلامات
+local AllowedUser = "حط_اسم_اللاعب_هنا" 
+
+-- التحقق من الهوية قبل تشغيل أي شيء
+if LocalPlayer.Name ~= AllowedUser then
+    print("عذراً، هذه النسخة غير مخصصة لحسابك.")
+    return -- إيقاف السكربت فوراً وعدم إظهار الواجهة
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local TopBar = Instance.new("Frame")
+local TitleLabel = Instance.new("TextLabel")
+local StatusFrame = Instance.new("Frame")
+local StatusLabel = Instance.new("TextLabel")
+local ActionButton = Instance.new("TextButton")
+local CloseButton = Instance.new("TextButton")
+
+local UICorner_Main = Instance.new("UICorner")
+local UICorner_Top = Instance.new("UICorner")
+local UICorner_Status = Instance.new("UICorner")
+local UICorner_Button = Instance.new("UICorner")
+
+-- ربط الواجهة بنظام الـ CoreGui للحماية من الحذف
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.ResetOnSpawn = false
+
+-- 1. الإطار الرئيسي (الخلفية الدارك)
+MainFrame.Name = "AbuYousef_Client_V1"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 28) -- أسود ملكي فخم
+MainFrame.Position = UDim2.new(0.35, 0, 0.3, 0)
+MainFrame.Size = UDim2.new(0, 240, 0, 160)
+MainFrame.Active = true
+MainFrame.Draggable = true -- سحب وتحريك باللمس في الجوال
+
+UICorner_Main.CornerRadius = UDim.new(0, 12)
+UICorner_Main.Parent = MainFrame
+
+-- 2. البار العلوي (العنوان)
+TopBar.Parent = MainFrame
+TopBar.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
+TopBar.Size = UDim2.new(1, 0, 0, 35)
+
+UICorner_Top.CornerRadius = UDim.new(0, 12)
+UICorner_Top.Parent = TopBar
+
+TitleLabel.Parent = TopBar
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Position = UDim2.new(0.05, 0, 0, 0)
+TitleLabel.Size = UDim2.new(0.75, 0, 1, 0)
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.Text = "ABU YOUSEF - CLIENT" -- اسم النسخة للزبون
+TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
+TitleLabel.TextSize = 13
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+-- زر الإغلاق الذكي (X)
+CloseButton.Parent = TopBar
+CloseButton.BackgroundTransparency = 1
+CloseButton.Position = UDim2.new(0.85, 0, 0, 0)
+CloseButton.Size = UDim2.new(0, 35, 1, 0)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.Text = "✕"
+CloseButton.TextColor3 = Color3.fromRGB(150, 150, 150)
+CloseButton.TextSize = 14
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- 3. مربع الحالة (Status)
+StatusFrame.Parent = MainFrame
+StatusFrame.BackgroundColor3 = Color3.fromRGB(180, 40, 40) -- يبدأ باللون الأحمر (مغلق)
+StatusFrame.Position = UDim2.new(0.05, 0, 0.32, 0)
+StatusFrame.Size = UDim2.new(0, 216, 0, 25)
+
+UICorner_Status.CornerRadius = UDim.new(0, 6)
+UICorner_Status.Parent = StatusFrame
+
+StatusLabel.Parent = StatusFrame
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Size = UDim2.new(1, 0, 1, 0)
+StatusLabel.Font = Enum.Font.GothamBold
+StatusLabel.Text = "STATUS: BYPASS STANDBY" -- الحالة قبل التشغيل
+StatusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+StatusLabel.TextSize = 11
+
+-- 4. زر التفعيل الرئيسي (التثبيت)
+ActionButton.Parent = MainFrame
+ActionButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+ActionButton.Position = UDim2.new(0.05, 0, 0.58, 0)
+ActionButton.Size = UDim2.new(0, 216, 0, 45)
+ActionButton.Font = Enum.Font.GothamBold
+ActionButton.Text = "FREEZE NETWORK DATA" -- نص احترافي بديل عن التثبيت
+ActionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ActionButton.TextSize = 13
+
+UICorner_Button.CornerRadius = UDim.new(0, 8)
+UICorner_Button.Parent = ActionButton
+
+--- [ نظام البرمجة والربط بالسيرفر ] ---
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+-- البحث عن ريموتات التريد في ماب عالم المملكة تلقائياً
+local TradeRemote = ReplicatedStorage:FindFirstChild("TradeRemote") or ReplicatedStorage:FindFirstChild("AcceptTrade") or ReplicatedStorage:FindFirstChild("UpdateTrade")
+
+local isFreezing = false
+
+ActionButton.MouseButton1Click:Connect(function()
+    isFreezing = not isFreezing
+    
+    if isFreezing then
+        -- تغيير الشكل للوضع النشط (الأخضر النيون الفخم)
+        StatusFrame.BackgroundColor3 = Color3.fromRGB(40, 160, 90)
+        StatusLabel.Text = "STATUS: PACKET INJECTED ✔"
+        
+        ActionButton.BackgroundColor3 = Color3.fromRGB(30, 120, 70)
+        ActionButton.Text = "INJECTING ACTIVE..."
+        
+        -- تشغيل الثغرة وتثبيت الموتر بالتريد فوراً
+        task.spawn(function()
+            while isFreezing do
+                if TradeRemote then
+                    TradeRemote:FireServer(true)
+                end
+                task.wait(0.01) -- سرعة فائقة تمنع تحديث البيانات عند الضحية
+            end
+        end)
+    else
+        -- العودة للوضع العادي
+        StatusFrame.BackgroundColor3 = Color3.fromRGB(180, 40, 40)
+        StatusLabel.Text = "STATUS: BYPASS STANDBY"
+        
+        ActionButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+        ActionButton.Text = "FREEZE NETWORK DATA"
+    end
+end)
