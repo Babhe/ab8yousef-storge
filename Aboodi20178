@@ -1,0 +1,217 @@
+-- سكريبت التجميع الاحترافي [نسخة البيع الرسمية] - حقوق: أبو يوسف - أبو مطر 👑
+-- 🛡️ نظام الحماية: الطرد الفوري لغير المشترين (Kick System)
+
+local AllowedUsers = {
+    ["Aboodi20178"] = true, -- المشتري المصرح له
+    ["tt_t7r"] = true -- حساب المالك
+}
+
+local LocalPlayer = game.Players.LocalPlayer
+
+-- فحص الحساب والطرد الفوري إذا لم يكن مصرحاً له
+if not AllowedUsers[LocalPlayer.Name] then
+    LocalPlayer:Kick("\n\n[ AbuYousef - AbuMatar System ]\n-----------------------------------\nError: Unauthorized Account!\n\nعذرًا، هذا السكربت مدفوع وغير مصرح لحسابك بتشغيله.\nلشراء النسخة أو التفعيل تواصل مع المالك مباشرة.\n-----------------------------------")
+    return 
+end
+
+-- ====================================================================
+-- الكود الأساسي للسكربت (تم تحديث نظام منع الطرد الأفك القوي هنا)
+-- ====================================================================
+
+local sg = Instance.new("ScreenGui")
+sg.Name = "AbuYousef_Perfect_Farm_v2"
+pcall(function() sg.Parent = game:GetService("CoreGui") end)
+if not sg.Parent then sg.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui") end
+
+-- [الحل القطعي للأفك والتفصيل]: نظام يحاكي ضغطات حقيقية على الشاشة مستحيل تكشفه اللعبة
+task.spawn(function()
+    local vim = game:GetService("VirtualInputManager")
+    while true do
+        task.wait(15) -- يرسل إشارة حركة كل 15 ثانية لإنعاش الحساب
+        pcall(function()
+            -- يضغط زر وهمي كأنه لمس حقيقي على الشاشة لمنع الـ 20 دقيقة طرد
+            vim:SendKeyEvent(true, Enum.KeyCode.RightShift, false, game)
+            task.wait(0.1)
+            vim:SendKeyEvent(false, Enum.KeyCode.RightShift, false, game)
+        end)
+    end
+end)
+
+-- اللوحة الرئيسية بنفس أبعاد وألوان الماب والفيديو بالظبط (Charcoal Dark Green)
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0, 330, 0, 210)
+main.Position = UDim2.new(0.5, -165, 0.4, -105)
+main.BackgroundColor3 = Color3.fromRGB(33, 43, 43) 
+main.BorderSizePixel = 0
+main.Active = true
+main.Draggable = true
+main.Parent = sg
+
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
+local stroke = Instance.new("UIStroke", main)
+stroke.Color = Color3.fromRGB(50, 60, 60)
+stroke.Thickness = 1.5
+
+-- زر التصغير (-) الفخم
+local minimizeBtn = Instance.new("TextButton", main)
+minimizeBtn.Size = UDim2.new(0, 30, 0, 30)
+minimizeBtn.Position = UDim2.new(1, -35, 0, 8)
+minimizeBtn.BackgroundColor3 = Color3.fromRGB(25, 30, 30)
+minimizeBtn.Text = "-"
+minimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeBtn.TextSize = 20
+minimizeBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", minimizeBtn).CornerRadius = UDim.new(0, 6)
+
+-- الدائرة الصغيرة التي تظهر عند التصغير
+local circleGui = Instance.new("TextButton", sg)
+circleGui.Size = UDim2.new(0, 65, 0, 65)
+circleGui.Position = UDim2.new(0.1, 0, 0.1, 0)
+circleGui.BackgroundColor3 = Color3.fromRGB(33, 43, 43)
+circleGui.Text = "أبو يوسف"
+circleGui.TextColor3 = Color3.fromRGB(255, 215, 0)
+circleGui.TextSize = 12
+circleGui.Font = Enum.Font.GothamBold
+circleGui.Visible = false
+circleGui.Active = true
+circleGui.Draggable = true
+Instance.new("UICorner", circleGui).CornerRadius = UDim.new(1, 0)
+local circleStroke = Instance.new("UIStroke", circleGui)
+circleStroke.Color = Color3.fromRGB(255, 215, 0)
+circleStroke.Thickness = 2
+
+minimizeBtn.MouseButton1Click:Connect(function() main.Visible = false circleGui.Visible = true end)
+circleGui.MouseButton1Click:Connect(function() circleGui.Visible = false main.Visible = true end)
+
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1, -40, 0, 45)
+title.Position = UDim2.new(0, 10, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "سكريت خاص بحقوق أبو يوسف - أبو مطر"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 13
+title.Font = Enum.Font.GothamBold
+title.TextXAlignment = Enum.TextXAlignment.Left
+
+local speedBox = Instance.new("Frame", main)
+speedBox.Size = UDim2.new(1, -24, 0, 35)
+speedBox.Position = UDim2.new(0, 12, 0, 55)
+speedBox.BackgroundColor3 = Color3.fromRGB(21, 27, 27)
+Instance.new("UICorner", speedBox).CornerRadius = UDim.new(0, 6)
+
+local speedLabel = Instance.new("TextLabel", speedBox)
+speedLabel.Size = UDim2.new(1, 0, 1, 0)
+speedLabel.BackgroundTransparency = 1
+speedLabel.Text = "السرعة الليلية: 0 كم/س"
+speedLabel.TextColor3 = Color3.fromRGB(52, 152, 219) 
+speedLabel.TextSize = 14
+speedLabel.Font = Enum.Font.GothamMedium
+
+local distBox = Instance.new("Frame", main)
+distBox.Size = UDim2.new(1, -24, 0, 35)
+distBox.Position = UDim2.new(0, 12, 0, 95)
+distBox.BackgroundColor3 = Color3.fromRGB(21, 27, 27)
+Instance.new("UICorner", distBox).CornerRadius = UDim.new(0, 6)
+
+local distLabel = Instance.new("TextLabel", distBox)
+distLabel.Size = UDim2.new(1, 0, 1, 0)
+distLabel.BackgroundTransparency = 1
+distLabel.Text = "المسافة الكلية: 0 متر"
+distLabel.TextColor3 = Color3.fromRGB(46, 204, 113) 
+distLabel.TextSize = 14
+distLabel.Font = Enum.Font.GothamMedium
+
+local toggleBtn = Instance.new("TextButton", main)
+toggleBtn.Size = UDim2.new(1, -24, 0, 45)
+toggleBtn.Position = UDim2.new(0, 12, 0, 145)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(192, 57, 43) 
+toggleBtn.Text = "شغل التجميع ياقلبي"
+toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleBtn.TextSize = 15
+toggleBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0, 8)
+
+local isToggled = false
+local totalDist = 0
+local savedCFrame = nil
+local farmConnection = nil
+
+toggleBtn.MouseButton1Click:Connect(function()
+    isToggled = not isToggled
+    local character = game.Players.LocalPlayer.Character
+    local seat = character and character:FindFirstChild("Humanoid") and character.Humanoid.SeatPart
+    
+    if isToggled then
+        if seat and seat:IsA("VehicleSeat") then
+            toggleBtn.BackgroundColor3 = Color3.fromRGB(39, 174, 96) 
+            toggleBtn.Text = "وقف التجميع ياقلبي"
+            
+            savedCFrame = seat.CFrame
+            
+            local bp = seat:FindFirstChild("YousefPos") or Instance.new("BodyPosition", seat)
+            bp.Name = "YousefPos"
+            bp.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+            bp.Position = savedCFrame.Position
+            
+            local bg = seat:FindFirstChild("YousefGyro") or Instance.new("BodyGyro", seat)
+            bg.Name = "YousefGyro"
+            bg.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+            bg.CFrame = savedCFrame
+            
+            farmConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                if not isToggled or not seat or not seat.Parent then
+                    if farmConnection then farmConnection:Disconnect() end
+                    return
+                end
+                
+                pcall(function()
+                    seat.AssemblyLinearVelocity = savedCFrame.LookVector * 145
+                    seat.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+                    bp.Position = savedCFrame.Position
+                    bg.CFrame = savedCFrame
+                end)
+            end)
+        else
+            isToggled = false
+            toggleBtn.Text = "اركب مقعد السائق أولاً! ⚠️"
+            task.wait(1.5)
+            toggleBtn.Text = "شغل التجميع ياقلبي"
+        end
+    else
+        toggleBtn.BackgroundColor3 = Color3.fromRGB(192, 57, 43)
+        toggleBtn.Text = "شغل التجميع ياقلبي"
+        if farmConnection then
+            farmConnection:Disconnect()
+            farmConnection = nil
+        end
+        pcall(function()
+            if seat and seat:IsA("VehicleSeat") then
+                if seat:FindFirstChild("YousefPos") then seat.YousefPos:Destroy() end
+                if seat:FindFirstChild("YousefGyro") then seat.YousefGyro:Destroy() end
+                seat.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+                seat.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+            end
+        end)
+    end
+end)
+
+task.spawn(function()
+    while true do
+        task.wait(0.2)
+        pcall(function()
+            local seat = game.Players.LocalPlayer.Character.Humanoid.SeatPart
+            if seat and seat:IsA("VehicleSeat") then
+                if isToggled then
+                    speedLabel.Text = "السرعة الليلية: " .. math.random(144, 146) .. " كم/س"
+                    totalDist = totalDist + (145 * 0.2 * 0.8)
+                    distLabel.Text = "المسافة الكلية: " .. math.floor(totalDist) .. " متر"
+                else
+                    local speed = math.floor(seat.AssemblyLinearVelocity.Magnitude)
+                    speedLabel.Text = "السرعة الليلية: " .. speed .. " كم/س"
+                end
+            else
+                speedLabel.Text = "السرعة الليلية: 0 كم/س"
+            end
+        end)
+    end
+end)
